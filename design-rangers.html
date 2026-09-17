@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디자인레인저스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3F1EC;
+    --surface: #FFFFFF;
+    --text: #17181C;
+    --muted: #6B6E76;
+    --line: rgba(23,24,28,0.12);
+
+    --blue: #2D5FE0;
+    --blue-deep: #1B3E9C;
+    --yellow: #F2B000;
+    --yellow-deep: #B47E00;
+    --black-r: #22232A;
+    --black-r-deep: #0B0C10;
+    --red: #E6392F;
+    --red-deep: #A32219;
+    --green: #29A34C;
+    --green-deep: #176B30;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E0F13;
+      --surface: #1A1C22;
+      --text: #F3F1EC;
+      --muted: #A7ABB4;
+      --line: rgba(243,241,236,0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E0F13;
+    --surface: #1A1C22;
+    --text: #F3F1EC;
+    --muted: #A7ABB4;
+    --line: rgba(243,241,236,0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  .display {
+    font-family: 'Black Han Sans', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  a, button { font-family: inherit; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 88px 24px 64px;
+    text-align: center;
+  }
+
+  .emblem-wrap {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 36px;
+    opacity: 0;
+    transform: scale(0.8) rotate(-8deg);
+    animation: emblemIn 0.7s cubic-bezier(.2,.8,.2,1) 0.1s forwards;
+  }
+  .emblem-wrap svg { width: 100%; height: 100%; display: block; }
+
+  @keyframes emblemIn {
+    to { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  .hero p {
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- ROSTER ---------- */
+  .roster-heading {
+    max-width: 1040px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+  }
+  .roster-heading h2 {
+    font-size: 1.5rem;
+    margin: 0 0 6px;
+  }
+  .roster-heading span {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .roster {
+    max-width: 1040px;
+    margin: 32px auto 0;
+    padding: 0 24px 100px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .card {
+    position: relative;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-radius: 4px;
+    padding: 28px 20px 26px;
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+    opacity: 0;
+    cursor: pointer;
+    transform: translateY(22px);
+    animation: cardIn 0.55s cubic-bezier(.2,.8,.2,1) forwards;
+    transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease;
+  }
+  .card:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+  .card:active { transform: translateY(-4px) scale(0.98); }
+  .card:nth-child(1){ animation-delay: 0.55s; }
+  .card:nth-child(2){ animation-delay: 0.65s; margin-top: 22px;}
+  .card:nth-child(3){ animation-delay: 0.75s; }
+  .card:nth-child(4){ animation-delay: 0.85s; margin-top: 22px;}
+  .card:nth-child(5){ animation-delay: 0.95s; }
+
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .card:hover { transform: translateY(-8px); }
+
+  .card .glyph {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 26px;
+  }
+  .card .glyph svg { width: 100%; height: 100%; display: block; }
+
+  .card .role {
+    font-size: 0.82rem;
+    font-weight: 700;
+    opacity: 0.85;
+    margin: 0 0 4px;
+  }
+  .card .name {
+    font-size: 1.32rem;
+    font-weight: 900;
+    margin: 0 0 14px;
+    line-height: 1.25;
+  }
+  .card .blurb {
+    font-size: 0.86rem;
+    line-height: 1.6;
+    opacity: 0.92;
+    margin: 0;
+  }
+
+  .card.blue {
+    background: linear-gradient(160deg, var(--blue), var(--blue-deep));
+    box-shadow: 0 14px 30px -18px rgba(45,95,224,0.7);
+  }
+  .card.blue:hover { box-shadow: 0 20px 40px -14px rgba(45,95,224,0.65); }
+
+  .card.yellow {
+    background: linear-gradient(160deg, var(--yellow), var(--yellow-deep));
+    box-shadow: 0 14px 30px -18px rgba(242,176,0,0.7);
+  }
+  .card.yellow:hover { box-shadow: 0 20px 40px -14px rgba(242,176,0,0.65); }
+
+  .card.black-r {
+    background: linear-gradient(160deg, var(--black-r), var(--black-r-deep));
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 14px 30px -18px rgba(0,0,0,0.8);
+  }
+  .card.black-r:hover { box-shadow: 0 20px 40px -14px rgba(0,0,0,0.75); }
+
+  .card.red {
+    background: linear-gradient(160deg, var(--red), var(--red-deep));
+    box-shadow: 0 14px 30px -18px rgba(230,57,47,0.7);
+  }
+  .card.red:hover { box-shadow: 0 20px 40px -14px rgba(230,57,47,0.65); }
+
+  .card.green {
+    background: linear-gradient(160deg, var(--green), var(--green-deep));
+    box-shadow: 0 14px 30px -18px rgba(41,163,76,0.7);
+  }
+  .card.green:hover { box-shadow: 0 20px 40px -14px rgba(41,163,76,0.65); }
+
+  footer {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  footer .rule {
+    width: 40px;
+    height: 3px;
+    background: var(--text);
+    opacity: 0.16;
+    margin: 0 auto 22px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .roster {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .card:nth-child(odd) { margin-top: 0; }
+    .card:nth-child(even) { margin-top: 0; }
+  }
+  @media (max-width: 520px) {
+    .hero { padding: 64px 20px 44px; }
+    .emblem-wrap { width: 152px; height: 152px; }
+    .roster { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- TRANSFORM FX ---------- */
+  @keyframes screenShake {
+    0%, 100% { transform: translate3d(0,0,0); }
+    15% { transform: translate3d(-6px, 2px, 0) rotate(-0.3deg); }
+    30% { transform: translate3d(6px, -2px, 0) rotate(0.3deg); }
+    45% { transform: translate3d(-5px, 1px, 0); }
+    60% { transform: translate3d(5px, -1px, 0); }
+    75% { transform: translate3d(-3px, 1px, 0); }
+    90% { transform: translate3d(2px, 0, 0); }
+  }
+  html.shaking { animation: screenShake 0.35s linear; }
+
+  #flash {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  #flash > div { position: absolute; inset: 0; opacity: 0; }
+
+  .flash-streaks {
+    background: conic-gradient(from 0deg,
+      transparent 0deg, var(--flash-a) 8deg, transparent 18deg,
+      transparent 68deg, var(--flash-a) 76deg, transparent 86deg,
+      transparent 140deg, var(--flash-a) 150deg, transparent 160deg,
+      transparent 212deg, var(--flash-a) 220deg, transparent 230deg,
+      transparent 284deg, var(--flash-a) 292deg, transparent 302deg,
+      transparent 352deg, var(--flash-a) 358deg, transparent 360deg);
+    transform: scale(0.3) rotate(0deg);
+    mix-blend-mode: screen;
+  }
+  .flash-burst {
+    background: radial-gradient(circle at 50% 50%, var(--flash-a) 0%, var(--flash-b) 55%, transparent 78%);
+    transform: scale(0.2);
+  }
+  .flash-white { background: #fff; }
+  .flash-word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .flash-word span {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(2.4rem, 9vw, 5.5rem);
+    color: #fff;
+    text-shadow: 0 0 18px rgba(0,0,0,0.35), 0 0 46px var(--flash-a);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  #flash.active .flash-streaks {
+    animation: streaksSpin 0.85s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  #flash.active .flash-burst {
+    animation: burstPulse 0.85s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  #flash.active .flash-white {
+    animation: whiteFlash 0.85s ease forwards;
+  }
+  #flash.active .flash-word span {
+    animation: wordPop 0.85s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+
+  @keyframes streaksSpin {
+    0%   { opacity: 0;    transform: scale(0.3) rotate(0deg); }
+    28%  { opacity: 0.95; transform: scale(1.1) rotate(160deg); }
+    65%  { opacity: 0.9;  transform: scale(1.6) rotate(360deg); }
+    100% { opacity: 0;    transform: scale(2.1) rotate(520deg); }
+  }
+  @keyframes burstPulse {
+    0%   { opacity: 0;   transform: scale(0.15); }
+    30%  { opacity: 1;   transform: scale(1); }
+    60%  { opacity: 1;   transform: scale(1.5); }
+    100% { opacity: 0;   transform: scale(2.2); }
+  }
+  @keyframes whiteFlash {
+    0%   { opacity: 0; }
+    38%  { opacity: 0; }
+    46%  { opacity: 0.92; }
+    58%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  @keyframes wordPop {
+    0%   { opacity: 0; transform: scale(0.5) rotate(-4deg); }
+    20%  { opacity: 1; transform: scale(1.08) rotate(1deg); }
+    30%  { opacity: 1; transform: scale(1) rotate(0deg); }
+    55%  { opacity: 1; transform: scale(1) rotate(0deg); }
+    75%  { opacity: 0; transform: scale(1.15) rotate(0deg); }
+    100% { opacity: 0; }
+  }
+
+  /* ---------- DETAIL / PROFILE PAGE ---------- */
+  .detail {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    color: #fff;
+  }
+  .detail[hidden] { display: none; }
+  .detail[data-key="blue"]    { background: radial-gradient(circle at 30% 20%, var(--blue), var(--blue-deep) 70%); }
+  .detail[data-key="yellow"]  { background: radial-gradient(circle at 30% 20%, var(--yellow), var(--yellow-deep) 70%); }
+  .detail[data-key="black-r"] { background: radial-gradient(circle at 30% 20%, var(--black-r), var(--black-r-deep) 70%); }
+  .detail[data-key="red"]     { background: radial-gradient(circle at 30% 20%, var(--red), var(--red-deep) 70%); }
+  .detail[data-key="green"]   { background: radial-gradient(circle at 30% 20%, var(--green), var(--green-deep) 70%); }
+
+  .detail-inner {
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    animation: detailIn 0.5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes detailIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .detail-glyph {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 22px;
+    animation: emblemPop 0.55s cubic-bezier(.2,.8,.2,1) 0.25s both;
+  }
+  .detail-glyph::before {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.55);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    animation: ringSpin 3.2s linear infinite;
+  }
+  .detail-glyph svg { width: 100%; height: 100%; display: block; position: relative; z-index: 1; }
+
+  @keyframes emblemPop {
+    0%   { opacity: 0; transform: scale(0.4) rotate(-25deg); }
+    60%  { opacity: 1; transform: scale(1.12) rotate(6deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes ringSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .detail-role {
+    font-size: 0.95rem;
+    font-weight: 700;
+    opacity: 0.85;
+    margin: 0 0 6px;
+  }
+  .detail-name {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    margin: 0 0 36px;
+  }
+  .detail-quote {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    opacity: 0.95;
+  }
+  .move-chip {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  .detail-blurb {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    opacity: 0.92;
+    margin: 0 0 34px;
+  }
+
+  .back-btn {
+    background: rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 12px 26px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .back-btn:hover { background: rgba(0,0,0,0.34); transform: translateY(-2px); }
+  .back-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<div id="flash" aria-hidden="true">
+  <div class="flash-streaks"></div>
+  <div class="flash-burst"></div>
+  <div class="flash-word"><span id="flashWord"></span></div>
+  <div class="flash-white"></div>
+</div>
+
+<div id="homeView">
+<section class="hero">
+  <div class="emblem-wrap">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(100,100)">
+        <path d="M0 0 L 90 0 A 90 90 0 0 1 27.8 85.6 Z" fill="var(--blue)"/>
+        <path d="M0 0 L 27.8 85.6 A 90 90 0 0 1 -72.8 52.9 Z" fill="var(--yellow)"/>
+        <path d="M0 0 L -72.8 52.9 A 90 90 0 0 1 -72.8 -52.9 Z" fill="var(--black-r)"/>
+        <path d="M0 0 L -72.8 -52.9 A 90 90 0 0 1 27.8 -85.6 Z" fill="var(--red)"/>
+        <path d="M0 0 L 27.8 -85.6 A 90 90 0 0 1 90 0 Z" fill="var(--green)"/>
+        <circle r="26" fill="var(--bg)"/>
+        <circle r="26" fill="none" stroke="var(--text)" stroke-opacity="0.15" stroke-width="2"/>
+      </g>
+    </svg>
+  </div>
+  <h1 class="display">디자인레인저스</h1>
+  <!-- 소개 문구: 아직 미정 -->
+</section>
+
+<div class="roster-heading">
+  <h2 class="display">다섯 명의 레인저</h2>
+  <!-- 안내 문구: 아직 미정 -->
+</div>
+
+<div class="roster">
+
+  <button class="card blue" type="button" data-key="blue" aria-label="윤서현 프로필 보기">
+    <div class="glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.16)" stroke="#fff" stroke-width="2"/><path d="M14 24 L21 31 L34 17" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <p class="role">블루 레인저</p>
+    <p class="name">윤서현</p>
+  </button>
+
+  <button class="card yellow" type="button" data-key="yellow" aria-label="남궁지영 프로필 보기">
+    <div class="glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2"/><path d="M24 14 L28 22 L37 23 L30 29 L32 38 L24 33 L16 38 L18 29 L11 23 L20 22 Z" fill="#fff"/></svg>
+    </div>
+    <p class="role">옐로우 레인저</p>
+    <p class="name">남궁지영</p>
+  </button>
+
+  <button class="card black-r" type="button" data-key="black-r" aria-label="민아현 프로필 보기">
+    <div class="glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.10)" stroke="#fff" stroke-width="2"/><rect x="16" y="16" width="16" height="16" fill="#fff"/></svg>
+    </div>
+    <p class="role">블랙 레인저</p>
+    <p class="name">민아현</p>
+  </button>
+
+  <button class="card red" type="button" data-key="red" aria-label="이주현 프로필 보기">
+    <div class="glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2"/><path d="M24 12 L34 24 L24 36 L14 24 Z" fill="#fff"/></svg>
+    </div>
+    <p class="role">레드 레인저</p>
+    <p class="name">이주현</p>
+  </button>
+
+  <button class="card green" type="button" data-key="green" aria-label="임다희 프로필 보기">
+    <div class="glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.16)" stroke="#fff" stroke-width="2"/><path d="M24 12 C30 16 32 22 24 36 C16 22 18 16 24 12 Z" fill="#fff"/></svg>
+    </div>
+    <p class="role">그린 레인저</p>
+    <p class="name">임다희</p>
+  </button>
+
+</div>
+
+<footer>
+  <div class="rule"></div>
+  <!-- 크레딧 문구: 아직 미정 -->
+</footer>
+</div>
+
+<section class="detail" data-key="blue" hidden>
+  <div class="detail-inner">
+    <div class="detail-glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.16)" stroke="#fff" stroke-width="2"/><path d="M14 24 L21 31 L34 17" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <p class="detail-role">블루 레인저</p>
+    <h2 class="detail-name display">윤서현</h2>
+    <button class="back-btn" type="button" data-back>팀으로 복귀</button>
+  </div>
+</section>
+
+<section class="detail" data-key="yellow" hidden>
+  <div class="detail-inner">
+    <div class="detail-glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2"/><path d="M24 14 L28 22 L37 23 L30 29 L32 38 L24 33 L16 38 L18 29 L11 23 L20 22 Z" fill="#fff"/></svg>
+    </div>
+    <p class="detail-role">옐로우 레인저</p>
+    <h2 class="detail-name display">남궁지영</h2>
+    <button class="back-btn" type="button" data-back>팀으로 복귀</button>
+  </div>
+</section>
+
+<section class="detail" data-key="black-r" hidden>
+  <div class="detail-inner">
+    <div class="detail-glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.10)" stroke="#fff" stroke-width="2"/><rect x="16" y="16" width="16" height="16" fill="#fff"/></svg>
+    </div>
+    <p class="detail-role">블랙 레인저</p>
+    <h2 class="detail-name display">민아현</h2>
+    <button class="back-btn" type="button" data-back>팀으로 복귀</button>
+  </div>
+</section>
+
+<section class="detail" data-key="red" hidden>
+  <div class="detail-inner">
+    <div class="detail-glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2"/><path d="M24 12 L34 24 L24 36 L14 24 Z" fill="#fff"/></svg>
+    </div>
+    <p class="detail-role">레드 레인저</p>
+    <h2 class="detail-name display">이주현</h2>
+    <button class="back-btn" type="button" data-back>팀으로 복귀</button>
+  </div>
+</section>
+
+<section class="detail" data-key="green" hidden>
+  <div class="detail-inner">
+    <div class="detail-glyph">
+      <svg viewBox="0 0 48 48"><path d="M24 4 L44 14 V26 C44 36 35 43 24 46 C13 43 4 36 4 26 V14 Z" fill="rgba(255,255,255,0.16)" stroke="#fff" stroke-width="2"/><path d="M24 12 C30 16 32 22 24 36 C16 22 18 16 24 12 Z" fill="#fff"/></svg>
+    </div>
+    <p class="detail-role">그린 레인저</p>
+    <h2 class="detail-name display">임다희</h2>
+    <button class="back-btn" type="button" data-back>팀으로 복귀</button>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var colors = {
+      'blue':    { a: '#2D5FE0', b: '#1B3E9C', label: '블루 레인저' },
+      'yellow':  { a: '#F2B000', b: '#B47E00', label: '옐로우 레인저' },
+      'black-r': { a: '#22232A', b: '#0B0C10', label: '블랙 레인저' },
+      'red':     { a: '#E6392F', b: '#A32219', label: '레드 레인저' },
+      'green':   { a: '#29A34C', b: '#176B30', label: '그린 레인저' }
+    };
+    var keys = Object.keys(colors);
+    var flash = document.getElementById('flash');
+    var flashWord = document.getElementById('flashWord');
+    var home = document.getElementById('homeView');
+    var details = Array.prototype.slice.call(document.querySelectorAll('.detail'));
+    var htmlEl = document.documentElement;
+
+    function keyFromHash() {
+      var h = location.hash.replace('#', '');
+      return keys.indexOf(h) > -1 ? h : null;
+    }
+
+    function applyView(key) {
+      home.hidden = !!key;
+      details.forEach(function (d) { d.hidden = d.dataset.key !== key; });
+      window.scrollTo(0, 0);
+    }
+
+    function flashTo(key) {
+      var visible = details.filter(function (d) { return !d.hidden; })[0];
+      var refKey = key || (visible ? visible.dataset.key : 'blue');
+      var c = colors[refKey] || colors.blue;
+
+      flash.style.setProperty('--flash-a', c.a);
+      flash.style.setProperty('--flash-b', c.b);
+      flashWord.textContent = key ? (c.label + ' 변신!!') : '';
+
+      flash.classList.remove('active');
+      htmlEl.classList.remove('shaking');
+      void flash.offsetWidth;
+      htmlEl.classList.add('shaking');
+      flash.classList.add('active');
+
+      setTimeout(function () { applyView(key); }, 390);
+      setTimeout(function () {
+        flash.classList.remove('active');
+        htmlEl.classList.remove('shaking');
+      }, 900);
+    }
+
+    document.querySelectorAll('.card').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.dataset.key;
+        history.pushState({ key: key }, '', '#' + key);
+        flashTo(key);
+      });
+    });
+
+    document.querySelectorAll('[data-back]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        history.pushState({ key: null }, '', location.pathname + location.search);
+        flashTo(null);
+      });
+    });
+
+    window.addEventListener('popstate', function () {
+      applyView(keyFromHash());
+    });
+
+    applyView(keyFromHash());
+  })();
+</script>
+
+</body>
+</html>
